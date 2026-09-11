@@ -1,0 +1,31 @@
+# MCP server configuration template (anonymized)
+mcp_servers:
+  network-controller:
+    command: "uvx network-mcp-server"
+    transport: "stdio"
+    env:
+      CONTROLLER_URL: "https://controller.example.local:8443"
+      CONTROLLER_API_KEY: "${CONTROLLER_API_KEY}"
+      READ_ONLY: "false"
+    timeout: 120
+
+  hypervisor-node1:
+    command: "uvx hypervisor-mcp-server"
+    transport: "stdio"
+    env:
+      HYPERVISOR_HOST: "10.0.0.1"
+      HYPERVISOR_PORT: "8006"
+      HYPERVISOR_TOKEN: "${HYPERVISOR_TOKEN}"
+      TOOL_ROUTING: "true"
+      ROUTER_TOP_K: "10"
+    timeout: 180
+
+  firewall-gw1:
+    command: "uvx firewall-mcp-server"
+    transport: "stdio"
+    env:
+      FIREWALL_HOST: "10.0.0.254"
+      FIREWALL_PORT: "4444"
+      FIREWALL_USER: "admin"
+      FIREWALL_PASSWORD: "${FIREWALL_PASSWORD}"
+    timeout: 120

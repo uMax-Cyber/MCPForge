@@ -1,12 +1,14 @@
 <div align="center">
 
-**🇬🇧 [English](README.md) · 🇷🇺 [Русский](README.ru.md) · 🇺🇿 [Oʻzbekcha](README.uz.md)**
+[![English](https://img.shields.io/badge/README-English-blue)](README.md)
+[![Русский](https://img.shields.io/badge/README-Русский-red)](README.ru.md)
+[![Oʻzbekcha](https://img.shields.io/badge/README-Oʻzbekcha-green)](README.uz.md)
 
 </div>
 
 # MCPForge — Архитектура MCP для ИИ-агентов
 
-MCP arxitekturasi: routed-tool pattern (312→3 vosita), uch darajali xavfsizlik, 9 anti-hallucination qoidasi.
+AI agentlarni production infratuzilma bilan xavfsiz bogʻlash: 312 ta vositani 3 taga siqish (routed-tool), uch bosqichli xavfsizlik va 9 ta anti-hallucination qoidasi.
 
 ## Skrinshot
 
@@ -14,12 +16,14 @@ MCP arxitekturasi: routed-tool pattern (312→3 vosita), uch darajali xavfsizlik
 
 ## 📬 Aloqa
 
-Savollar bormi? Yozing: **[allumaxmail@gmail.com](mailto:allumaxmail@gmail.com)**
+Savollaringiz bormi? Yozing: **[allumaxmail@gmail.com](mailto:allumaxmail@gmail.com)**
 
 ---
 
 <div align="center">
 
-**🇬🇧 [English](README.md) · 🇷🇺 [Русский](README.ru.md) · 🇺🇿 [Oʻzbekcha](README.uz.md)**
+[![English](https://img.shields.io/badge/README-English-blue)](README.md)
+[![Рус](https://img.shields.io/badge/README-Русский-red)](README.ru.md)
+[![Oʻzbekcha](https://img.shields.io/badge/README-Oʻzbekcha-green)](README.uz.md)
 
 </div>

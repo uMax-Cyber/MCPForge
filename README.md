@@ -1,3 +1,5 @@
+[English](README.md) | [Русский](README.ru.md)
+
 # MCP Infrastructure Toolkit
 [![CI](https://github.com/uMax-Cyber/MCPForge/actions/workflows/ci.yml/badge.svg)](https://github.com/uMax-Cyber/MCPForge/actions/workflows/ci.yml)
 

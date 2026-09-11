@@ -1,4 +1,5 @@
 # MCP Infrastructure Toolkit
+[![CI](https://github.com/uMax-Cyber/MCPForge/actions/workflows/ci.yml/badge.svg)](https://github.com/uMax-Cyber/MCPForge/actions/workflows/ci.yml)
 
 Architecture patterns and safety frameworks for running Model Context Protocol (MCP) servers against production infrastructure (firewalls, network controllers, hypervisors). Built from real deployments: 6 MCP servers, 312 tools, full-access mode with guardrails.
 

@@ -6,83 +6,83 @@
 
 </div>
 
-# MCP infratuzilma vositalar toʻplami
+# MCP infratuzilma toʻplami
 
 ![Namoyish](screenshots/demo.svg)
 [![CI](https://github.com/uMax-Cyber/MCPForge/actions/workflows/ci.yml/badge.svg)](https://github.com/uMax-Cyber/MCPForge/actions/workflows/ci.yml)
 
-Model Context Protocol (MCP) serverlarini ishlab chiqarish infratuzilmasiga (fayrvollar, tarmoq kontrollerlari, gipervizorlar) qarshi ishga tushirish uchun arxitektura naqshlari va xavfsizlik tizimlari. Haqiqiy joylashtirishlar asosida yaratilgan: 6 ta MCP serveri, 312 ta vosita, himoya cheklovlari bilan toʻliq kirish rejimi.
+Model Context Protocol (MCP) serverlarini production infratuzilmada — fayrvol, tarmoq kontrolleri, gipervizorda — xavfsiz ishlatish uchun arxitektura naqshlari va himoya mexanizmlari. Hammasi haqiqiy joylashtirish tajribasidan yigʻilgan: 6 ta MCP server, 312 ta tool, guardrail qoʻyilgan holda toʻliq kirish.
 
 ## Muammo
 
-MCP serverlari AI agentlarga ishlab chiqarish infratuzilmasiga toʻgʻridan-toʻgʻri kirish imkonini beradi. Tartibsiz holda kuchsiz LLM lar parametrlarni tasavvur qiladi (hallucination), turli manbalardan kelgan maʼlumotlarni aralashtirib yuboradi va xatolarni maʼlumotdan ajrata olmaydi. Bu toʻplam ana shunday kirishni xavfsiz qiladigan naqshlarni taqdim etadi.
+MCP serverlar AI agentga production infratuzilmaga toʻgʻridan-toʻgʻri kirish beradi. Aniq tartib boʻlmasa, kuchsiz LLM parametrlarni oʻylab topadi, har xil manbadan olgan maʼlumotni aralashtirib yuboradi, xatoni maʼlumotdan ajrata olmaydi. Shu muammolarga qarshi ishlaydigan naqshlar — ana shu toʻplamda.
 
 ## Asosiy naqshlar
 
-### 1. Routlangan vositalar naqshi (katta kataloglar uchun)
-Serverda 200+ vosita boʻlsa, ularning barchasini LLM ga koʻrsatmang. Buning oʻrniga:
+### 1. Routlangan tool naqshi (katta kataloglar uchun)
+Serverda 200 dan ortiq tool boʻlsa, LLM ga hammasini koʻrsatish shart emas. Oʻrniga:
 ```
-route_tools(query="list VMs") → tegishli vositalar nomlarini qaytaradi
+route_tools(query="list VMs") → kerakli toollarning nomini qaytaradi
 call_routed_tool(name="list_vms", arguments={...})
 ```
-Bu 200 ta vositani 3 ta koʻrinadigan vositaga siqib, kontekst oynasini tejaydi.
+Natijada 200 ta tool oʻrniga faqat 3 tasi koʻrinadi — kontekst oynasi tejaladi.
 
 ### 2. Xavfsizlik darajalari (avtonomiya darajalari)
 ```
-🟢 YASHIL — oʻqish/roʻyxat/status: erkin bajarish
-🟡 SARIQ — oʻchirish/rollback/oʻlchamni oʻzgartirish: avval foydalanuvchi bilan tasdiqlash
-🔴 QIZIL — muhim infratuzilma (agentning oʻz xosti): HECH QACHON
+🟢 YASHIL — oʻqish/roʻyxat/status: bemalol bajaraveradi
+🟡 SARIQ — oʻchirish/rollback/resizing: avval foydalanuvchidan tasdiq oling
+🔴 QIZIL — muhim infratuzilma (agentning oʻz hosti): HECH QACHON
 ```
 
-### 3. Ikkilamchi zaxira xotira
-Asosiy variant: RAG serveri (semantik qidiruv)
-Zaxira: Fayl asosidagi markdown ombori (grep qidiruv)
-Interfeys: ikkalasi bilan ham ishlaydigan va har doim ikkalasiga ham yozadigan yagona skript.
+### 3. Zaxirali xotira
+Asosiy: RAG server (semantik qidiruv)
+Zaxira: faylda saqlanadigan markdown ombor (grep bilan qidiruv)
+Interfeys: yagona skript — ikkala variant bilan ishlaydi, har doim ikkoviga ham yozadi.
 
 ### 4. MCP uchun anti-hallucination qoidalari
-- Maʼlumotlar faqat vositalarning haqiqiy natijalaridan
-- Xato ≠ maʼlumot (xatoni xabar qiling, ishonchli raqamlarni oʻylab topmang)
-- Kesilgan natija ≠ toʻliq maʼlumot
-- Tekshiruvsiz turli VLAN/manbalardan faktlarni aralashtirmang
-- Vosita natijasi > modelning "bilimi"
+- Maʼlumot faqat toolning haqiqiy natijasidan olinadi
+- Xato — bu maʼlumot emas: xatoni xabar qiling, raqam oʻylab topmang
+- Kesib tashlangan natija — toʻliq maʼlumot emas
+- Tekshirmasdan turli VLAN yoki manbalardagi faktlarni aralashtirmang
+- Tool natijasi modelning "bilimi"dan ustun
 
 ## Arxitektura
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  AI agent   │────▶│  MCP serverlar×6 │────▶│  Infratuzilma   │
-│  (Hermes)   │◀────│  (312 vosita)    │◀────│  (Proxmox/UniFi/ │
+│  AI agent   │────▶│ MCP serverlar ×6 │────▶│  Infratuzilma   │
+│  (Hermes)   │◀────│  (312 ta tool)   │◀────│  (Proxmox/UniFi/ │
 └─────────────┘     └──────────────────┘     │   Sophos/LightRAG)│
                            │                 └─────────────────┘
                            ▼
                     ┌──────────────┐
-                    │ Xavfsizlik   │
-                    │ qatlami      │
+                    │  Xavfsizlik  │
+                    │ (daraja+qoida)│
                     └──────────────┘
 ```
 
 ## Konfiguratsiya misollari
 
-- `config/mcp_servers.yaml` — muhit oʻzgaruvchilari bilan koʻp serverli konfiguratsiya
-- `config/safety_rules.yaml` — daraja boʻyicha harakatlar tasnifi
-- `examples/routed_pattern.py` — routlangan vositalar chaqiruv ketma-ketligi
+- `config/mcp_servers.yaml` — env oʻzgaruvchilari bilan bir nechta serverning konfiguratsiyasi
+- `config/safety_rules.yaml` — harakatlarni xavfsizlik darajasiga boʻlish
+- `examples/routed_pattern.py` — routlangan tool chaqiruvlarining tartibi
 
 ## Haqiqiy koʻrsatkichlar
 
 | Koʻrsatkich | Qiymat |
 |--------|-------|
-| MCP serverlari | 6 (unifi, proxmox×3, sophos×2) |
-| Jami vositalar | 312 |
-| Serverga vositalar (routlangan) | 3 koʻrinadigan |
-| Oʻqitishdan keyin xavfsizlik buzilishlari | 0/8 test |
-| Oʻqitishdan keyin hallucination darajasi | 0% (8/8 test oʻtdi) |
+| MCP serverlar | 6 (unifi, proxmox×3, sophos×2) |
+| Jami tool | 312 |
+| Serverdagi tool (routing bilan) | 3 tasi koʻrinadi |
+| Oʻqitilgandan keyin xavfsizlik buzilishlari | 0/8 test |
+| Oʻqitilgandan keyin hallucination | 0% (8/8 test oʻtdi) |
 
 ## Litsenziya
 MIT
 
 ## 📬 Aloqa
 
-Savollaringiz bormi? Yozing: **[allumaxmail@gmail.com](mailto:allumaxmail@gmail.com)**
+Savol boʻlsa yozing: **[allumaxmail@gmail.com](mailto:allumaxmail@gmail.com)**
 
 ---
 
